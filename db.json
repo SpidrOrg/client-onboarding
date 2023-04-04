@@ -1,0 +1,244 @@
+{
+  "clientdata": [
+    {
+      "id": "1"
+    },
+    {
+      "address": "India"
+    },
+    {
+      "adminEmail": "admin@rndcorp.com"
+    },
+    {
+      "assetsPath": "s3 path"
+    },
+    {
+      "choosenModel": "['modelA', 'modelB]"
+    },
+    {
+      "configPath": "s3 path"
+    },
+    {
+      "frequency": "30"
+    },
+    {
+      "host": "rndcorp"
+    },
+    {
+      "lookback": "1825"
+    },
+    {
+      "name": "RND Corporation"
+    },
+    {
+      "phone": "1-111-1111"
+    },
+    [
+      {
+        "address": "",
+        "admin_email": "",
+        "asset_path": "",
+        "choosen_model": "",
+        "config_path": "",
+        "frequency": "",
+        "host": "",
+        "lookback": "",
+        "name": "",
+        "phone": ""
+      }
+    ],
+    [
+      {
+        "address": "",
+        "admin_email": "",
+        "asset_path": "",
+        "choosen_model": "",
+        "config_path": "",
+        "frequency": "",
+        "host": "",
+        "lookback": "",
+        "name": "",
+        "phone": ""
+      }
+    ],
+    [
+      {
+        "address": "",
+        "admin_email": "",
+        "asset_path": "",
+        "choosen_model": "",
+        "config_path": "",
+        "frequency": "",
+        "host": "",
+        "lookback": "",
+        "name": "",
+        "phone": ""
+      }
+    ],
+    {
+      "address": "",
+      "admin_email": "",
+      "asset_path": "",
+      "choosen_model": "",
+      "config_path": "",
+      "frequency": "",
+      "host": "",
+      "lookback": "",
+      "name": "",
+      "phone": "",
+      "id": "tEzuixo"
+    },
+    {
+      "id": "RN2bB03"
+    },
+    {
+      "address": "cc",
+      "admin_email": "mm",
+      "asset_path": "zz",
+      "choosen_model": [
+        "",
+        "Item1",
+        "Item2"
+      ],
+      "config_path": "cc",
+      "frequency": "mmm",
+      "host": "lll",
+      "lookback": "jjj",
+      "name": "xxx",
+      "phone": "ooo",
+      "id": "NKmTx45"
+    },
+    {
+      "address": "",
+      "admin_email": "",
+      "asset_path": "",
+      "choosen_model": "",
+      "config_path": "",
+      "frequency": "",
+      "host": "",
+      "lookback": "",
+      "name": "",
+      "phone": "",
+      "id": "1J2EsVh"
+    },
+    {
+      "address": "ssss",
+      "admin_email": "sxxx",
+      "asset_path": "ssss",
+      "choosen_model": [
+        "",
+        "Item1",
+        "Item2"
+      ],
+      "config_path": "vvv",
+      "frequency": "xxxx",
+      "host": "ccc",
+      "lookback": "ccc",
+      "name": "cccc",
+      "phone": "cccc",
+      "id": "TWnL01q"
+    },
+    {
+      "address": "xx",
+      "admin_email": "xx@xx.x",
+      "asset_path": "xx",
+      "choosen_model": [
+        "",
+        "Item1",
+        "Item2"
+      ],
+      "config_path": "bbb",
+      "frequency": "444",
+      "host": "dd",
+      "lookback": "22",
+      "name": "aaa",
+      "phone": "zzzz",
+      "id": "1TIGWSz"
+    },
+    {
+      "address": "aa",
+      "admin_email": "aa@aa.c",
+      "asset_path": "ssss",
+      "choosen_model": [
+        "",
+        "Item1",
+        "Item2"
+      ],
+      "config_path": "ddd",
+      "frequency": "111",
+      "host": "aaa",
+      "lookback": "111",
+      "name": "cccc",
+      "phone": "aaaa",
+      "id": "DgAHg5u"
+    },
+    {
+      "address": "aa",
+      "admin_email": "aa@aa.a",
+      "asset_path": "ddd",
+      "choosen_model": [
+        "",
+        "Item1",
+        "Item2"
+      ],
+      "config_path": "vvvv",
+      "frequency": "111",
+      "host": "mmm",
+      "lookback": "444",
+      "name": "sss",
+      "phone": "sss",
+      "id": "5zMii99"
+    },
+    {
+      "address": "aaa",
+      "admin_email": "aa@aa.c",
+      "asset_path": "aaa",
+      "choosen_model": [
+        "",
+        "Item1",
+        "Item2"
+      ],
+      "config_path": "1ssdd",
+      "frequency": "111",
+      "host": "mmm",
+      "lookback": "222",
+      "name": "ssss",
+      "phone": "334455",
+      "id": "upJasMj"
+    },
+    {
+      "address": "aaa",
+      "admin_email": "aa@aa.c",
+      "asset_path": "aaa",
+      "choosen_model": [
+        "",
+        "Item1",
+        "Item2"
+      ],
+      "config_path": "ddd",
+      "frequency": "11",
+      "host": "cc",
+      "lookback": "33",
+      "name": "xxx",
+      "phone": "44",
+      "id": "vqRMYDz"
+    },
+    {
+      "address": "Test Address",
+      "admin_email": "ttt@daga.com",
+      "asset_path": "aassee",
+      "choosen_model": [
+        "",
+        "Item1",
+        "Item2"
+      ],
+      "config_path": "aaaa",
+      "frequency": "1234",
+      "host": "test host",
+      "lookback": "334",
+      "name": "Vishal Daga",
+      "phone": "9988998899",
+      "id": "7j_6sTU"
+    }
+  ]
+}
