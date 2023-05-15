@@ -2,20 +2,20 @@
 import _ from 'lodash';
 import jwt_decode from 'jwt-decode';
 import { setIdpData, getAuthDetails } from './idpUtils';
-import Login from "./components/Login.vue";
-import LandingPage from "@/components/LandingPage.vue";
+import LoginPage from '@/components/LoginPage.vue';
+import LandingPage from '@/components/LandingPage.vue';
 
 export default {
   name: 'App',
   components: {
-    Login,
-    LandingPage
+    LoginPage,
+    LandingPage,
   },
   props: {
     idpConfig: {
       type: Object,
       required: true,
-    }
+    },
   },
   data() {
     return {
@@ -57,6 +57,6 @@ export default {
 </script>
 
 <template>
-  <Login v-if="!isLoggedIn && !loading" />
+  <LoginPage v-if="!isLoggedIn && !loading" />
   <LandingPage v-if="isLoggedIn && !loading" />
 </template>
