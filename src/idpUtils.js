@@ -103,12 +103,12 @@ export async function logout() {
 // }
 
 export async function invokeGetApi(apiName, payload) {
-  const { accessToken } = await getAuthDetails();
+  const {  token } = await getAuthDetails();
   const response = await axios.get(
     `https://${idpData.apiPrefix}/${idpData.stage}/${apiName}`,
     {
       headers: {
-        Authorization: accessToken,
+        Authorization: token,
       },
       params: payload,
     }
@@ -117,13 +117,13 @@ export async function invokeGetApi(apiName, payload) {
 }
 
 export async function invokePostApi(apiName, payload) {
-  const { accessToken } = await getAuthDetails();
+  const { token } = await getAuthDetails();
   const response = await axios.post(
     `https://${idpData.apiPrefix}/${idpData.stage}/${apiName}`,
     payload,
     {
       headers: {
-        Authorization: accessToken,
+        Authorization: token,
         'Content-Type': 'application/json',
       },
     }
