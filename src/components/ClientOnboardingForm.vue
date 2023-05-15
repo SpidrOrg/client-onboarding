@@ -108,6 +108,14 @@ export default {
         endDate: null,
       },
       formInputsValidity: {
+        adminEmail: true,
+        categories: true,
+        chosenModel: true,
+        frequency: true,
+        host: true,
+        name: true,
+        phone: true,
+        selectedDataSources: true,
         startDate: true,
         endDate: true,
       },
@@ -140,24 +148,45 @@ export default {
     formatDatePickerValue(date) {
       return formatFn(date, 'MMM yyyy');
     },
-    async submitHandler() {
-      this.isLoading = true;
-
+    validateFormInputs() {
       const enteredStartDateIsValid = !_.isEmpty(this.formData.startDate);
       const enteredEndDateIsValid = !_.isEmpty(this.formData.endDate);
+      const enteredNameIsValid = !_.isEmpty(this.formData.name);
+      const enteredPhoneIsValid = !_.isEmpty(this.formData.phone);
+      const enteredModelIsValid = !_.isEmpty(this.formData.chosenModel);
+      const enteredCategoriesAreValid = !_.isEmpty(this.formData.categories);
+      const enteredFrequencyIsValid = !_.isEmpty(this.formData.frequency);
+      const enteredAdminEmailIsValid = !_.isEmpty(this.formData.adminEmail);
+      const enteredHostIsValid = !_.isEmpty(this.formData.host);
+      const enteredDataSourcesAreValid = !_.isEmpty(
+        this.formData.selectedDataSources
+      );
 
       this.formInputsValidity = {
+        adminEmail: enteredAdminEmailIsValid,
+        categories: enteredCategoriesAreValid,
+        chosenModel: enteredModelIsValid,
+        frequency: enteredFrequencyIsValid,
+        host: enteredHostIsValid,
+        name: enteredNameIsValid,
+        phone: enteredPhoneIsValid,
+        selectedDataSources: enteredDataSourcesAreValid,
         startDate: enteredStartDateIsValid,
         endDate: enteredEndDateIsValid,
       };
+    },
+    async submitHandler() {
+      this.isLoading = true;
+      this.validateFormInputs();
 
-      const formIsValid = enteredStartDateIsValid && enteredEndDateIsValid;
+      const formIsValid = _.every(_.values(this.formInputsValidity), (l)=>!!l);
 
       if (!formIsValid) {
         return;
       }
       const response = await submitNewTenantForm(this.formData);
       console.log(response);
+      this.isLoading = false;
     },
   },
 };
