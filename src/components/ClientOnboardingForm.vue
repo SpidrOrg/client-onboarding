@@ -1,12 +1,18 @@
 <script>
 import _ from 'lodash';
 import submitNewTenantForm from "@/api/newTenantSubmit/submitNewTenantForm";
+import { format as formatFn, endOfMonth, subMonths, addMonths } from 'date-fns';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 const MODELS = ['rf', 'svr'];
 const ALL_OPTION = 'All';
 
 export default {
   name: 'ClientOnboardingForm',
+  components: {
+    VueDatePicker,
+  },
   props: {},
   emits: ['closeForm'],
   data() {
@@ -101,11 +107,55 @@ export default {
         startDate: null,
         endDate: null,
       },
+      formInputsValidity: {
+        startDate: true,
+        endDate: true,
+      },
     };
   },
+  computed: {
+    minStartDate() {
+      if (!this.formData.endDate) return null;
+      const year = _.get(this.formData.endDate, 'year');
+      const monthIndex = _.get(this.formData.endDate, 'month');
+      return subMonths(new Date(year, monthIndex), 60);
+    },
+    maxStartDate() {
+      if (!this.formData.endDate) return endOfMonth(subMonths(new Date(), 1));
+      const year = _.get(this.formData.endDate, 'year');
+      const monthIndex = _.get(this.formData.endDate, 'month');
+      return endOfMonth(subMonths(new Date(year, monthIndex), 1));
+    },
+    minEndDate() {
+      if (!this.formData.startDate) return null;
+      const year = _.get(this.formData.startDate, 'year');
+      const monthIndex = _.get(this.formData.startDate, 'month');
+      return addMonths(new Date(year, monthIndex), 1);
+    },
+    maxEndDate() {
+      return endOfMonth(new Date());
+    },
+  },
   methods: {
+    formatDatePickerValue(date) {
+      return formatFn(date, 'MMM yyyy');
+    },
     async submitHandler() {
       this.isLoading = true;
+
+      const enteredStartDateIsValid = !_.isEmpty(this.formData.startDate);
+      const enteredEndDateIsValid = !_.isEmpty(this.formData.endDate);
+
+      this.formInputsValidity = {
+        startDate: enteredStartDateIsValid,
+        endDate: enteredEndDateIsValid,
+      };
+
+      const formIsValid = enteredStartDateIsValid && enteredEndDateIsValid;
+
+      if (!formIsValid) {
+        return;
+      }
       const response = await submitNewTenantForm(this.formData);
       console.log(response);
     },
@@ -175,7 +225,7 @@ export default {
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="12">
+        <v-col cols="12" sm="4">
           <label for="selectedDataSources" class="tw-text-base">
             Data Sources
           </label>
@@ -186,6 +236,72 @@ export default {
             multiple
             :rules="selectedDataSourcesRule"
           />
+        </v-col>
+        <v-col cols="12" sm="4">
+          <label for="start-date-picker" class="tw-text-base">
+            Start Date (Month & Year)
+          </label>
+          <VueDatePicker
+            id="start-date-picker"
+            v-model="formData.startDate"
+            month-picker
+            :format="formatDatePickerValue"
+            :min-date="minStartDate"
+            :max-date="maxStartDate"
+            :clearable="false"
+            :disabled="isLoading"
+            auto-apply
+            menu-class-name="dp-custom-menu"
+          >
+            <template #dp-input="{ value }">
+              <div
+                :class="`tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-brand-gray-1
+            ${isLoading ? 'tw-opacity-40' : 'tw-cursor-pointer'}`"
+              >
+                <span class="tw-text-base">{{ value }}</span>
+                <v-icon icon="mdi-calendar-month" :size="32" />
+              </div>
+            </template>
+          </VueDatePicker>
+          <span
+            v-if="!formInputsValidity.startDate"
+            class="tw-text-sm tw-text-red-500 tw-ml-3"
+          >
+            Start Date is required
+          </span>
+        </v-col>
+        <v-col cols="12" sm="4">
+          <label for="end-date-picker" class="tw-text-base">
+            End Date (Month & Year)
+          </label>
+          <VueDatePicker
+            id="end-date-picker"
+            v-model="formData.endDate"
+            month-picker
+            :format="formatDatePickerValue"
+            :min-date="minEndDate"
+            :max-date="maxEndDate"
+            :clearable="false"
+            :disabled="isLoading"
+            auto-apply
+            menu-class-name="dp-custom-menu"
+          >
+            <template #dp-input="{ value }">
+              <div
+                :class="`tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-brand-gray-1
+            ${isLoading ? 'tw-opacity-40' : 'tw-cursor-pointer'}`"
+              >
+                <span class="tw-text-base">{{ value }}</span>
+                <v-icon icon="mdi-calendar-month" :size="32" />
+              </div>
+            </template>
+          </VueDatePicker>
+          <span
+            v-if="!formInputsValidity.endDate"
+            class="tw-text-sm tw-text-red-500 tw-ml-3"
+          >
+            End Date is required
+          </span>
         </v-col>
       </v-row>
       <v-row>
@@ -207,3 +323,33 @@ export default {
     </v-form>
   </div>
 </template>
+
+<style>
+.dp-custom-menu {
+  background: #ffffff;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+}
+.dp__theme_light {
+  --dp-background-color: #ffffff;
+  --dp-text-color: #212121;
+  --dp-hover-color: #f3f3f3;
+  --dp-hover-text-color: #212121;
+  --dp-hover-icon-color: #959595;
+  --dp-primary-color: #7823dc;
+  --dp-primary-disabled-color: rgb(120 35 220 / 30%);
+  --dp-primary-text-color: #ffffff;
+  --dp-secondary-color: #c0c4cc;
+  --dp-border-color: #ddd;
+  --dp-menu-border-color: #ddd;
+  --dp-border-color-hover: #aaaeb7;
+  --dp-disabled-color: #f6f6f6;
+  --dp-scroll-bar-background: #f3f3f3;
+  --dp-scroll-bar-color: #959595;
+  --dp-success-color: #76d275;
+  --dp-success-color-disabled: #a3d9b1;
+  --dp-icon-color: #959595;
+  --dp-danger-color: #ff6f60;
+  --dp-highlight-color: rgba(25, 118, 210, 0.1);
+}
+</style>
