@@ -70,6 +70,7 @@ export default {
       <ClientOnboardingForm
         v-if="clientOnboardingFormIsShown"
         @close-form="hideFormHandler"
+        @submit-review="submitNewClientOnboarding"
       />
     </v-responsive>
   </div>

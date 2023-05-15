@@ -9,7 +9,7 @@ import App from './App.vue';
 
 // Composables
 import { createApp } from 'vue';
-import idpConfig from '@/idpConfig';
+import idpConfig from '@/idpConfig-local';
 
 // Plugins
 import { registerPlugins } from '@/plugins';

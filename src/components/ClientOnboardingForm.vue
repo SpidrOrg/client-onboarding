@@ -1,5 +1,6 @@
 <script>
 import _ from 'lodash';
+import submitNewTenantForm from "@/api/newTenantSubmit/submitNewTenantForm";
 
 const MODELS = ['rf', 'svr'];
 const ALL_OPTION = 'All';
@@ -11,7 +12,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      availableModels: [ALL_OPTION, ...MODELS],
+      availableModels: [...MODELS],
       availableDataSources: [
         'Covid',
         'Federal reserve data',
@@ -68,9 +69,9 @@ export default {
       ],
       chosenModelRule: [
         (value) => {
-          if (value) return true;
+          if (_.size(value) < 1) return 'At least 1 model must be selected';
 
-          return 'Model is required.';
+          return true;
         },
       ],
       categoriesRule: [
@@ -91,7 +92,7 @@ export default {
       formData: {
         adminEmail: '',
         categories: '',
-        chosenModel: null,
+        chosenModel: [],
         frequency: null,
         host: null,
         name: '',
@@ -104,11 +105,9 @@ export default {
   },
   methods: {
     async submitHandler() {
-      this.$emit('submitReview', {
-        selectedAction: this.selectedAction,
-        userResponse: this.userResponse,
-      });
-      this.userResponse = null;
+      this.isLoading = true;
+      const response = await submitNewTenantForm(this.formData);
+      console.log(response);
     },
   },
 };
@@ -154,6 +153,7 @@ export default {
             :items="availableModels"
             v-model="formData.chosenModel"
             :rules="chosenModelRule"
+            multiple
           />
         </v-col>
         <v-col cols="12" sm="4">
