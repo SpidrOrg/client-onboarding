@@ -131,9 +131,9 @@ export default {
       const enteredModelIsValid = !_.isEmpty(this.formData.chosenModel);
       const enteredCategoriesAreValid = !_.isEmpty(this.formData.categories);
       const enteredFrequencyIsValid = !_.isEmpty(this.formData.frequency);
-      const enteredAdminEmailIsValid = this.validateAdminEmail();
+      const enteredAdminEmailIsValid = this.validateAdminEmail(this.formData.adminEmail);
       const enteredHostIsValid = !_.isEmpty(this.formData.host);
-      const enteredDataSourcesAreValid = this.validateSelectedDataSources();
+      const enteredDataSourcesAreValid = this.validateSelectedDataSources(this.formData.selectedDataSources);
 
       this.formInputsValidity = {
         adminEmail: enteredAdminEmailIsValid,
@@ -204,6 +204,7 @@ export default {
             id="chosenModel"
             :items="availableModels"
             v-model="formData.chosenModel"
+            multiple
             :rules="generalRules"
           />
         </v-col>
