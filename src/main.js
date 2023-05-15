@@ -9,11 +9,12 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
+import idpConfig from "@/idpConfig";
 
 // Plugins
 import { registerPlugins } from '@/plugins'
 
-const app = createApp(App)
+const app = createApp(App, {idpConfig})
 
 registerPlugins(app)
 

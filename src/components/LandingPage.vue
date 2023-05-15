@@ -1,105 +1,6 @@
-<template>
-  <v-btn class="float-right mr-2" @click="logout" color="red">Logout</v-btn>
-  <v-container class="fill-height">
-    <v-responsive class="d-flex align-center text-center fill-height">
-      <v-progress-circular indeterminate color="#7823DC"  :size="70" :width="7" style="position: fixed;left: 50%;top: 35%;z-index: 1000;" v-if="isLoading"/>
-      <div v-if="!clientOnboarding">
-        <v-btn density="comfortable" color="primary" class="mr-2" size="x-large" @click="clientOnboardingFunc">CLIENT ONBOARDING</v-btn>
-        <v-btn density="comfortable" color="warning" size="x-large">SHOW HISTORY</v-btn>
-      </div>
-      <div v-else-if="clientOnboarding">
-        <v-sheet class="mx-auto">
-          <h1 class="mb-2">CLIENT ONBOARDING</h1>
-          <v-form validate-on="submit" @submit.prevent="submit" ref="form">
-            <v-text-field
-              v-model="formData.address"
-              :rules="addressrule"
-              label="Address"
-            ></v-text-field>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                v-model="formData.admin_email"
-                :rules="admin_emailrule"
-                label="Admin Email"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-select 
-                v-model="formData.choosen_model"
-                label="Select Model"
-                :items="['Item1','Item2','Item3']"
-                multiple
-                :rules="choosen_modelrule"
-                >
-                </v-select>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                v-model="formData.asset_path"
-                :rules="asset_pathrule"
-                label="Asset Path"
-              ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                v-model="formData.config_path"
-                :rules="config_pathrule"
-                label="Config Path"
-               ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="4">
-                <v-text-field
-                  v-model="formData.frequency"
-                  :rules="frequencyrule"
-                  label="Frequency"
-                  ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field
-                v-model="formData.host"
-                :rules="hostrule"
-                label="Host"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field
-                v-model="formData.lookback"
-                :rules="lookbackrule"
-                label="LookBack"
-               ></v-text-field>
-              </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    v-model="formData.name"
-                    :rules="namerule"
-                    label="Name"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                  v-model="formData.phone"
-                  :rules="phonerule"
-                  label="Phone"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            <v-btn type="submit"  class="mt-2" color="success">Submit</v-btn>
-          </v-form>
-        </v-sheet>
-      </div>
-    </v-responsive>
-  </v-container>
-</template>
-
 <script>
 import axios from 'axios';
+import { logout } from '../idpUtils';
 
   export default {
   name: "LandingPage",
@@ -146,7 +47,7 @@ import axios from 'axios';
             return 'Frequency should be a number'
           }
           if (value) return true
-          
+
           return 'Frequency is required field.'
         },
       ],
@@ -170,7 +71,7 @@ import axios from 'axios';
             return 'Lookback should be a number'
           }
           if (value) return true
-        
+
           return 'Lookback is required field.'
         },
       ],
@@ -210,12 +111,8 @@ import axios from 'axios';
         this.isLoading = false
       },1500)
     },
-    logout(){
-      this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false
-        this.$router.push('/')
-      },1500)
+    handleLogout(){
+      logout()
     },
     async submit (event) {
       let vm = this;
@@ -248,7 +145,7 @@ import axios from 'axios';
         .catch(function (error) {
           console.log(error);
         });
-         
+
       },
       async checkApi (data) {
         console.log(data);
@@ -271,7 +168,106 @@ import axios from 'axios';
             return resolve(true)
           }, 1000)
         })
-      },      
+      },
   }
 }
 </script>
+<template>
+  <v-btn class="float-right mr-2" @click="handleLogout" color="red">Logout</v-btn>
+  <v-container class="fill-height">
+    <v-responsive class="d-flex align-center text-center fill-height">
+      <v-progress-circular indeterminate color="#7823DC"  :size="70" :width="7" style="position: fixed;left: 50%;top: 35%;z-index: 1000;" v-if="isLoading"/>
+      <div v-if="!clientOnboarding">
+        <v-btn density="comfortable" color="primary" class="mr-2" size="x-large" @click="clientOnboardingFunc">CLIENT ONBOARDING</v-btn>
+        <v-btn density="comfortable" color="warning" size="x-large">SHOW HISTORY</v-btn>
+      </div>
+      <div v-else-if="clientOnboarding">
+        <v-sheet class="mx-auto">
+          <h1 class="mb-2">CLIENT ONBOARDING</h1>
+          <v-form validate-on="submit" @submit.prevent="submit" ref="form">
+            <v-text-field
+              v-model="formData.address"
+              :rules="addressrule"
+              label="Address"
+            ></v-text-field>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="formData.admin_email"
+                  :rules="admin_emailrule"
+                  label="Admin Email"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-select
+                  v-model="formData.choosen_model"
+                  label="Select Model"
+                  :items="['Item1','Item2','Item3']"
+                  multiple
+                  :rules="choosen_modelrule"
+                >
+                </v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="formData.asset_path"
+                  :rules="asset_pathrule"
+                  label="Asset Path"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="formData.config_path"
+                  :rules="config_pathrule"
+                  label="Config Path"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="4">
+                <v-text-field
+                  v-model="formData.frequency"
+                  :rules="frequencyrule"
+                  label="Frequency"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="4">
+                <v-text-field
+                  v-model="formData.host"
+                  :rules="hostrule"
+                  label="Host"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="4">
+                <v-text-field
+                  v-model="formData.lookback"
+                  :rules="lookbackrule"
+                  label="LookBack"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="formData.name"
+                  :rules="namerule"
+                  label="Name"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="formData.phone"
+                  :rules="phonerule"
+                  label="Phone"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-btn type="submit"  class="mt-2" color="success">Submit</v-btn>
+          </v-form>
+        </v-sheet>
+      </div>
+    </v-responsive>
+  </v-container>
+</template>
