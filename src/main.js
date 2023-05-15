@@ -5,17 +5,19 @@
  */
 
 // Components
-import App from './App.vue'
+import App from './App.vue';
 
 // Composables
-import { createApp } from 'vue'
-import idpConfig from "@/idpConfig";
+import { createApp } from 'vue';
+import idpConfig from '@/idpConfig';
 
 // Plugins
-import { registerPlugins } from '@/plugins'
+import { registerPlugins } from '@/plugins';
 
-const app = createApp(App, {idpConfig})
+import './index.css';
 
-registerPlugins(app)
+const app = createApp(App, { idpConfig });
 
-app.mount('#app')
+registerPlugins(app);
+
+app.mount('#app');
