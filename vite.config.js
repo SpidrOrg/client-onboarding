@@ -9,21 +9,19 @@ import { fileURLToPath, URL } from 'node:url'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue({ 
+    vue({
       template: { transformAssetUrls }
     }),
     // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       autoImport: true,
-      styles: {
-        configFile: 'src/styles/settings.scss',
-      },
     }),
   ],
   define: { 'process.env': {} },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      './runtimeConfig': './runtimeConfig.browser',
     },
     extensions: [
       '.js',
@@ -38,4 +36,22 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  build: {
+    minify: false,
+    rollupOptions: {
+      input: {
+        // the default entry point
+        app: './index.html',
+
+        'idpConfig': './src/idpConfig.js',
+      },
+      output: {
+        entryFileNames: assetInfo => {
+          return assetInfo.name === 'idpConfig'
+            ? '[name].js'
+            : 'assets/js/[name]-[hash].js'
+        }
+      },
+    },
+  }
 })
