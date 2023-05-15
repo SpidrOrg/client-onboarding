@@ -39,52 +39,7 @@ export default {
           }
           if (value) return true;
 
-          return 'Admin Email is required';
-        },
-      ],
-      frequencyRule: [
-        (value) => {
-          if (isNaN(value)) {
-            return 'Frequency should be a number';
-          }
-          if (value) return true;
-
-          return 'Frequency is required.';
-        },
-      ],
-      hostRule: [
-        (value) => {
-          if (value) return true;
-
-          return 'Host is required.';
-        },
-      ],
-      nameRule: [
-        (value) => {
-          if (value) return true;
-
-          return 'Name is required.';
-        },
-      ],
-      phoneRule: [
-        (value) => {
-          if (value) return true;
-
-          return 'Phone number is required.';
-        },
-      ],
-      chosenModelRule: [
-        (value) => {
-          if (_.size(value) < 1) return 'At least 1 model must be selected';
-
-          return true;
-        },
-      ],
-      categoriesRule: [
-        (value) => {
-          if (value) return true;
-
-          return 'categories are required.';
+          return 'This field is required';
         },
       ],
       selectedDataSourcesRule: [
@@ -93,6 +48,13 @@ export default {
           if (_.size(value) < 2) return 'At least 2 sources must be selected';
 
           return true;
+        },
+      ],
+      generalRules: [
+        (value) => {
+          if (value) return true;
+
+          return 'This field is required';
         },
       ],
       formData: {
@@ -148,6 +110,19 @@ export default {
     formatDatePickerValue(date) {
       return formatFn(date, 'MMM yyyy');
     },
+    validateAdminEmail(value) {
+      if (_.isEmpty(value)) return false;
+      const validRegex =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+      return !!value.match(validRegex);
+    },
+    validateSelectedDataSources(value) {
+      if (!_.includes(value, 'IHS')) return false;
+      if (_.size(value) < 2) return false;
+
+      return true;
+    },
     validateFormInputs() {
       const enteredStartDateIsValid = !_.isEmpty(this.formData.startDate);
       const enteredEndDateIsValid = !_.isEmpty(this.formData.endDate);
@@ -156,11 +131,9 @@ export default {
       const enteredModelIsValid = !_.isEmpty(this.formData.chosenModel);
       const enteredCategoriesAreValid = !_.isEmpty(this.formData.categories);
       const enteredFrequencyIsValid = !_.isEmpty(this.formData.frequency);
-      const enteredAdminEmailIsValid = !_.isEmpty(this.formData.adminEmail);
+      const enteredAdminEmailIsValid = this.validateAdminEmail();
       const enteredHostIsValid = !_.isEmpty(this.formData.host);
-      const enteredDataSourcesAreValid = !_.isEmpty(
-        this.formData.selectedDataSources
-      );
+      const enteredDataSourcesAreValid = this.validateSelectedDataSources();
 
       this.formInputsValidity = {
         adminEmail: enteredAdminEmailIsValid,
@@ -204,7 +177,7 @@ export default {
           <v-text-field
             id="name"
             v-model="formData.name"
-            :rules="nameRule"
+            :rules="generalRules"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="4">
@@ -220,7 +193,7 @@ export default {
           <v-text-field
             id="phone"
             v-model="formData.phone"
-            :rules="phoneRule"
+            :rules="generalRules"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -231,8 +204,7 @@ export default {
             id="chosenModel"
             :items="availableModels"
             v-model="formData.chosenModel"
-            :rules="chosenModelRule"
-            multiple
+            :rules="generalRules"
           />
         </v-col>
         <v-col cols="12" sm="4">
@@ -241,7 +213,7 @@ export default {
             id="frequency"
             v-model="formData.frequency"
             type="number"
-            :rules="frequencyRule"
+            :rules="generalRules"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="4">
@@ -249,7 +221,7 @@ export default {
           <v-text-field
             id="host"
             v-model="formData.host"
-            :rules="hostRule"
+            :rules="generalRules"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -341,7 +313,7 @@ export default {
           <v-text-field
             id="categories"
             v-model="formData.categories"
-            :rules="categoriesRule"
+            :rules="generalRules"
           ></v-text-field>
         </v-col>
       </v-row>
