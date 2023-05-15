@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      error: null,
       availableModels: [...MODELS],
       availableDataSources: [
         'Covid',
@@ -160,6 +161,7 @@ export default {
     },
     async submitHandler() {
       this.isLoading = true;
+      this.error = null;
       this.validateFormInputs();
 
       const formIsValid = _.every(
@@ -170,8 +172,12 @@ export default {
       if (!formIsValid) {
         return;
       }
-      const response = await submitNewTenantForm(this.formData);
-      console.log(response);
+      try {
+        const response = await submitNewTenantForm(this.formData);
+        console.log(response);
+      } catch (e) {
+        this.error = e;
+      }
       this.isLoading = false;
     },
   },
@@ -183,6 +189,9 @@ export default {
     <h1 class="tw-text-2xl tw-font-semibold tw-text-center tw-mb-10">
       CLIENT ONBOARDING
     </h1>
+    <div v-if="!isLoading && error">
+      <v-alert type="error" :text="error.toString()"></v-alert>
+    </div>
     <v-form validate-on="submit" @submit.prevent="submitHandler" ref="form">
       <v-row>
         <v-col cols="12" sm="4">

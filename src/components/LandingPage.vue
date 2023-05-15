@@ -58,7 +58,7 @@ export default {
       v-if="!isLoading"
     >
       <div
-        v-if="!clientOnboardingFormIsShown"
+        v-if="!clientOnboardingFormIsShown && !clientOnboardingHistoryIsShown"
         class="tw-flex tw-justify-center tw-items-center tw-gap-x-5 tw-mt-20"
       >
         <v-btn
@@ -75,7 +75,7 @@ export default {
           size="x-large"
           @click="showHistoryHandler"
         >
-          SHOW HISTORY
+          SHOW CLIENT ONBOARDING HISTORY
         </v-btn>
       </div>
       <ClientOnboardingForm
