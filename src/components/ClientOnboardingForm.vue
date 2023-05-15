@@ -1,12 +1,11 @@
 <script>
 import _ from 'lodash';
-import submitNewTenantForm from "@/api/newTenantSubmit/submitNewTenantForm";
+import submitNewTenantForm from '@/api/newTenantSubmit/submitNewTenantForm';
 import { format as formatFn, endOfMonth, subMonths, addMonths } from 'date-fns';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 const MODELS = ['rf', 'svr'];
-const ALL_OPTION = 'All';
 
 export default {
   name: 'ClientOnboardingForm',
@@ -46,6 +45,13 @@ export default {
         (value) => {
           if (!_.includes(value, 'IHS')) return "'IHS' must be selected";
           if (_.size(value) < 2) return 'At least 2 sources must be selected';
+
+          return true;
+        },
+      ],
+      chosenModelRules: [
+        (value) => {
+          if (_.size(value) < 1) return 'At least 1 model must be selected';
 
           return true;
         },
@@ -131,9 +137,13 @@ export default {
       const enteredModelIsValid = !_.isEmpty(this.formData.chosenModel);
       const enteredCategoriesAreValid = !_.isEmpty(this.formData.categories);
       const enteredFrequencyIsValid = !_.isEmpty(this.formData.frequency);
-      const enteredAdminEmailIsValid = this.validateAdminEmail(this.formData.adminEmail);
+      const enteredAdminEmailIsValid = this.validateAdminEmail(
+        this.formData.adminEmail
+      );
       const enteredHostIsValid = !_.isEmpty(this.formData.host);
-      const enteredDataSourcesAreValid = this.validateSelectedDataSources(this.formData.selectedDataSources);
+      const enteredDataSourcesAreValid = this.validateSelectedDataSources(
+        this.formData.selectedDataSources
+      );
 
       this.formInputsValidity = {
         adminEmail: enteredAdminEmailIsValid,
@@ -152,7 +162,10 @@ export default {
       this.isLoading = true;
       this.validateFormInputs();
 
-      const formIsValid = _.every(_.values(this.formInputsValidity), (l)=>!!l);
+      const formIsValid = _.every(
+        _.values(this.formInputsValidity),
+        (l) => !!l
+      );
 
       if (!formIsValid) {
         return;
@@ -205,7 +218,7 @@ export default {
             :items="availableModels"
             v-model="formData.chosenModel"
             multiple
-            :rules="generalRules"
+            :rules="chosenModelRules"
           />
         </v-col>
         <v-col cols="12" sm="4">

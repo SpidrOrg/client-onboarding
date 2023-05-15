@@ -2,16 +2,19 @@
 import { logout } from '../idpUtils';
 
 import ClientOnboardingForm from './ClientOnboardingForm.vue';
+import OnboardingHistory from './OnboardingHistory.vue';
 
 export default {
   name: 'LandingPage',
   components: {
     ClientOnboardingForm,
+    OnboardingHistory,
   },
   data() {
     return {
       isLoading: false,
       clientOnboardingFormIsShown: false,
+      clientOnboardingHistoryIsShown: false,
     };
   },
   methods: {
@@ -24,6 +27,9 @@ export default {
     },
     hideFormHandler() {
       this.clientOnboardingFormIsShown = false;
+    },
+    showHistoryHandler() {
+      this.clientOnboardingHistoryIsShown = true;
     },
     handleLogout() {
       logout();
@@ -63,7 +69,12 @@ export default {
         >
           CLIENT ONBOARDING
         </v-btn>
-        <v-btn density="comfortable" color="warning" size="x-large">
+        <v-btn
+          density="comfortable"
+          color="warning"
+          size="x-large"
+          @click="showHistoryHandler"
+        >
           SHOW HISTORY
         </v-btn>
       </div>
@@ -72,6 +83,7 @@ export default {
         @close-form="hideFormHandler"
         @submit-review="submitNewClientOnboarding"
       />
+      <OnboardingHistory v-if="clientOnboardingHistoryIsShown" />
     </v-responsive>
   </div>
 </template>
