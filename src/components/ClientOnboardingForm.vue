@@ -130,14 +130,18 @@ export default {
     },
     validateSelectedDataSources(value) {
       this.selectedDataSourcesError = null;
-      if (_.size(this.formData.selectedClientDataSources) > 0) {
-        if (_.size(value) > 0) {
-          this.selectedDataSourcesError =
-            'External data sources cannot be selected if client specific data source is selected';
-          return false;
-        } else {
-          return true;
+      const numOfClientDataSources = _.size(
+        this.formData.selectedClientDataSources
+      );
+      if (numOfClientDataSources > 0) {
+        for (let i = 0; i < numOfClientDataSources; i++) {
+          if (_.includes(value, this.formData.selectedClientDataSources[i])) {
+            this.selectedDataSourcesError =
+              'External and client specific data sources cannot be common';
+            return false;
+          }
         }
+        return true;
       }
 
       if (_.size(value) < 2) {
@@ -174,6 +178,11 @@ export default {
       if (differenceInCalendarMonths(endDateObj, startDateObj) < 1) {
         this.startDateError =
           'Start Date must be at least 1 month prior to End Date';
+        return false;
+      }
+
+      if (differenceInCalendarMonths(endDateObj, startDateObj) > 60) {
+        this.startDateError = 'Date range cannot exceed 60 months';
         return false;
       }
 
