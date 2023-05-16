@@ -19,17 +19,16 @@ export default {
   },
   methods: {
     clientOnboardingFunc() {
-      this.isLoading = true;
-      setTimeout(() => {
-        this.clientOnboardingFormIsShown = true;
-        this.isLoading = false;
-      }, 1500);
+      this.clientOnboardingFormIsShown = true;
     },
     hideFormHandler() {
       this.clientOnboardingFormIsShown = false;
     },
     showHistoryHandler() {
       this.clientOnboardingHistoryIsShown = true;
+    },
+    closeHistoryViewHandler() {
+      this.clientOnboardingHistoryIsShown = false;
     },
     handleLogout() {
       logout();
@@ -40,7 +39,7 @@ export default {
 <template>
   <div class="tw-h-screen tw-w-screen tw-p-6">
     <div class="tw-w-full tw-flex tw-justify-end tw-px-6">
-      <v-btn @click="handleLogout" color="red">Logout</v-btn>
+      <v-btn @click="handleLogout" color="grey-lighten-2">Logout</v-btn>
     </div>
     <div
       class="tw-w-full tw-h-full tw-flex tw-justify-center tw-mt-40"
@@ -54,7 +53,7 @@ export default {
       />
     </div>
     <v-responsive
-      class="tw-h-full tw-w-full tw-flex tw-justify-center tw-mt-20"
+      class="tw-h-full tw-w-full tw-overflow-auto tw-flex tw-justify-center tw-mt-20"
       v-if="!isLoading"
     >
       <div
@@ -63,7 +62,7 @@ export default {
       >
         <v-btn
           density="comfortable"
-          color="primary"
+          color="grey-lighten-2"
           size="x-large"
           @click="clientOnboardingFunc"
         >
@@ -71,7 +70,7 @@ export default {
         </v-btn>
         <v-btn
           density="comfortable"
-          color="warning"
+          color="grey-lighten-2"
           size="x-large"
           @click="showHistoryHandler"
         >
@@ -81,9 +80,11 @@ export default {
       <ClientOnboardingForm
         v-if="clientOnboardingFormIsShown"
         @close-form="hideFormHandler"
-        @submit-review="submitNewClientOnboarding"
       />
-      <OnboardingHistory v-if="clientOnboardingHistoryIsShown" />
+      <OnboardingHistory
+        v-if="clientOnboardingHistoryIsShown"
+        @close="closeHistoryViewHandler"
+      />
     </v-responsive>
   </div>
 </template>

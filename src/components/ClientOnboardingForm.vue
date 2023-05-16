@@ -1,7 +1,13 @@
 <script>
 import _ from 'lodash';
 import submitNewTenantForm from '@/api/newTenantSubmit/submitNewTenantForm';
-import { format as formatFn, endOfMonth, subMonths, addMonths } from 'date-fns';
+import {
+  format as formatFn,
+  endOfMonth,
+  subMonths,
+  addMonths,
+  differenceInCalendarMonths,
+} from 'date-fns';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
@@ -18,17 +24,21 @@ export default {
     return {
       isLoading: false,
       error: null,
+      submitted: false,
+      startDateError: null,
+      selectedDataSourcesError: null,
       availableModels: [...MODELS],
       availableDataSources: [
-        'Covid',
-        'Federal reserve data',
         'Google Trends',
-        'IHS',
-        'Meteostat',
-        'Moodys_188',
         'SimilarWeb',
         'Yahoo Finance',
+        'Meteostat',
+        'Covid',
+        'Federal reserve data',
+        'Moodys',
+        'Moodys_188',
       ],
+      availableClientSpecificDataSources: ['Google Trends', 'SimilarWeb'],
       adminEmailRule: [
         (value) => {
           var validRegex =
@@ -40,14 +50,6 @@ export default {
           if (value) return true;
 
           return 'This field is required';
-        },
-      ],
-      selectedDataSourcesRule: [
-        (value) => {
-          if (!_.includes(value, 'IHS')) return "'IHS' must be selected";
-          if (_.size(value) < 2) return 'At least 2 sources must be selected';
-
-          return true;
         },
       ],
       chosenModelRules: [
@@ -72,7 +74,8 @@ export default {
         host: null,
         name: '',
         phone: null,
-        selectedDataSources: ['IHS'],
+        selectedDataSources: [],
+        selectedClientDataSources: [],
         startDate: null,
         endDate: null,
       },
@@ -85,6 +88,7 @@ export default {
         name: true,
         phone: true,
         selectedDataSources: true,
+        selectedClientDataSources: true,
         startDate: true,
         endDate: true,
       },
@@ -125,13 +129,58 @@ export default {
       return !!value.match(validRegex);
     },
     validateSelectedDataSources(value) {
-      if (!_.includes(value, 'IHS')) return false;
-      if (_.size(value) < 2) return false;
+      this.selectedDataSourcesError = null;
+      if (_.size(this.formData.selectedClientDataSources) > 0) {
+        if (_.size(value) > 0) {
+          this.selectedDataSourcesError =
+            'External data sources cannot be selected if client specific data source is selected';
+          return false;
+        } else {
+          return true;
+        }
+      }
+
+      if (_.size(value) < 2) {
+        this.selectedDataSourcesError = 'At least 2 sources must be selected';
+        return false;
+      }
+
+      if (_.includes(value, 'Moodys') && _.includes(value, 'Moodys_188')) {
+        this.selectedDataSourcesError =
+          "Cannot select both 'Moodys' and 'Moodys_188'";
+        return false;
+      }
+
+      return true;
+    },
+    validateStartDate() {
+      this.startDateError = null;
+      if (!this.formData.startDate) return false;
+      if (!this.formData.endDate) {
+        this.startDateError =
+          'Start Date must be at least 1 month prior to End Date';
+        return false;
+      }
+
+      const startDateObj = new Date(
+        _.get(this.formData.startDate, 'year'),
+        _.get(this.formData.startDate, 'month')
+      );
+      const endDateObj = new Date(
+        _.get(this.formData.endDate, 'year'),
+        _.get(this.formData.endDate, 'month')
+      );
+
+      if (differenceInCalendarMonths(endDateObj, startDateObj) < 1) {
+        this.startDateError =
+          'Start Date must be at least 1 month prior to End Date';
+        return false;
+      }
 
       return true;
     },
     validateFormInputs() {
-      const enteredStartDateIsValid = !_.isEmpty(this.formData.startDate);
+      const enteredStartDateIsValid = this.validateStartDate();
       const enteredEndDateIsValid = !_.isEmpty(this.formData.endDate);
       const enteredNameIsValid = !_.isEmpty(this.formData.name);
       const enteredPhoneIsValid = !_.isEmpty(this.formData.phone);
@@ -147,6 +196,7 @@ export default {
       );
 
       this.formInputsValidity = {
+        ...this.formInputsValidity,
         adminEmail: enteredAdminEmailIsValid,
         categories: enteredCategoriesAreValid,
         chosenModel: enteredModelIsValid,
@@ -160,8 +210,9 @@ export default {
       };
     },
     async submitHandler() {
-      this.isLoading = true;
       this.error = null;
+      this.submitted = false;
+
       this.validateFormInputs();
 
       const formIsValid = _.every(
@@ -172,9 +223,21 @@ export default {
       if (!formIsValid) {
         return;
       }
+
+      this.isLoading = true;
       try {
         const response = await submitNewTenantForm(this.formData);
-        console.log(response);
+
+        if (response?.status === 'success') {
+          this.submitted = true;
+          setTimeout(() => {
+            this.submitted = false;
+          }, 5000);
+        }
+
+        if (response?.status === 'fail') {
+          this.error = 'Form submission failed';
+        }
       } catch (e) {
         this.error = e;
       }
@@ -189,10 +252,33 @@ export default {
     <h1 class="tw-text-2xl tw-font-semibold tw-text-center tw-mb-10">
       CLIENT ONBOARDING
     </h1>
-    <div v-if="!isLoading && error">
-      <v-alert type="error" :text="error.toString()"></v-alert>
+    <div
+      class="tw-w-full tw-h-full tw-flex tw-justify-center tw-mt-40"
+      v-if="isLoading"
+    >
+      <v-progress-circular
+        indeterminate
+        color="#7823DC"
+        :size="80"
+        :width="10"
+      />
     </div>
-    <v-form validate-on="submit" @submit.prevent="submitHandler" ref="form">
+    <div v-if="!isLoading && error" class="tw-pb-4">
+      <v-alert type="error" :text="error.toString()" closable></v-alert>
+    </div>
+    <div v-if="!isLoading && submitted" class="tw-pb-4">
+      <v-alert
+        type="success"
+        text="Form successfully submitted"
+        closable
+      ></v-alert>
+    </div>
+    <v-form
+      v-if="!isLoading"
+      validate-on="submit"
+      @submit.prevent="submitHandler"
+      ref="form"
+    >
       <v-row>
         <v-col cols="12" sm="4">
           <label for="name" class="tw-text-base">Name</label>
@@ -249,52 +335,47 @@ export default {
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="4">
+        <v-col cols="12" sm="6">
+          <label for="selectedClientDataSources" class="tw-text-base">
+            Client Specific Data Sources
+          </label>
+          <v-select
+            id="selectedClientDataSources"
+            :items="availableClientSpecificDataSources"
+            v-model="formData.selectedClientDataSources"
+            multiple
+          />
+        </v-col>
+        <v-col cols="12" sm="6">
           <label for="selectedDataSources" class="tw-text-base">
-            Data Sources
+            External Data Sources
           </label>
           <v-select
             id="selectedDataSources"
             :items="availableDataSources"
             v-model="formData.selectedDataSources"
             multiple
-            :rules="selectedDataSourcesRule"
           />
-        </v-col>
-        <v-col cols="12" sm="4">
-          <label for="start-date-picker" class="tw-text-base">
-            Start Date (Month & Year)
-          </label>
-          <VueDatePicker
-            id="start-date-picker"
-            v-model="formData.startDate"
-            month-picker
-            :format="formatDatePickerValue"
-            :min-date="minStartDate"
-            :max-date="maxStartDate"
-            :clearable="false"
-            :disabled="isLoading"
-            auto-apply
-            menu-class-name="dp-custom-menu"
-          >
-            <template #dp-input="{ value }">
-              <div
-                :class="`tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-brand-gray-1
-            ${isLoading ? 'tw-opacity-40' : 'tw-cursor-pointer'}`"
-              >
-                <span class="tw-text-base">{{ value }}</span>
-                <v-icon icon="mdi-calendar-month" :size="32" />
-              </div>
-            </template>
-          </VueDatePicker>
           <span
-            v-if="!formInputsValidity.startDate"
+            v-if="!formInputsValidity.selectedDataSources"
             class="tw-text-sm tw-text-red-500 tw-ml-3"
           >
-            Start Date is required
+            {{ selectedDataSourcesError }}
           </span>
         </v-col>
-        <v-col cols="12" sm="4">
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="6">
+          <label for="categories" class="tw-text-base"
+            >Categories (Comma Separated Values)</label
+          >
+          <v-text-field
+            id="categories"
+            v-model="formData.categories"
+            :rules="generalRules"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="3">
           <label for="end-date-picker" class="tw-text-base">
             End Date (Month & Year)
           </label>
@@ -327,22 +408,45 @@ export default {
             End Date is required
           </span>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" sm="12">
-          <label for="categories" class="tw-text-base"
-            >Categories (Comma Separated Values)</label
+        <v-col cols="12" sm="3">
+          <label for="start-date-picker" class="tw-text-base">
+            Start Date (Month & Year)
+          </label>
+          <VueDatePicker
+            id="start-date-picker"
+            v-model="formData.startDate"
+            month-picker
+            :format="formatDatePickerValue"
+            :min-date="minStartDate"
+            :max-date="maxStartDate"
+            :clearable="false"
+            :disabled="isLoading"
+            auto-apply
+            menu-class-name="dp-custom-menu"
           >
-          <v-text-field
-            id="categories"
-            v-model="formData.categories"
-            :rules="generalRules"
-          ></v-text-field>
+            <template #dp-input="{ value }">
+              <div
+                :class="`tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-brand-gray-1
+            ${isLoading ? 'tw-opacity-40' : 'tw-cursor-pointer'}`"
+              >
+                <span class="tw-text-base">{{ value }}</span>
+                <v-icon icon="mdi-calendar-month" :size="32" />
+              </div>
+            </template>
+          </VueDatePicker>
+          <span
+            v-if="!formInputsValidity.startDate"
+            class="tw-text-sm tw-text-red-500 tw-ml-3"
+          >
+            {{ startDateError || 'Start Date is required' }}
+          </span>
         </v-col>
       </v-row>
-      <div class="tw-flex tw-justify-center tw-gap-x-5">
-        <v-btn @click="$emit('closeForm')" color="#EDEDED">Back</v-btn>
-        <v-btn type="submit" color="success">Submit</v-btn>
+      <div class="tw-flex tw-justify-center tw-gap-x-5 tw-mt-4">
+        <v-btn @click="$emit('closeForm')" color="grey-lighten-2"
+          >Go Back</v-btn
+        >
+        <v-btn type="submit" color="grey-lighten-2">Submit</v-btn>
       </div>
     </v-form>
   </div>
@@ -353,27 +457,5 @@ export default {
   background: #ffffff;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
   padding: 8px;
-}
-.dp__theme_light {
-  --dp-background-color: #ffffff;
-  --dp-text-color: #212121;
-  --dp-hover-color: #f3f3f3;
-  --dp-hover-text-color: #212121;
-  --dp-hover-icon-color: #959595;
-  --dp-primary-color: #7823dc;
-  --dp-primary-disabled-color: rgb(120 35 220 / 30%);
-  --dp-primary-text-color: #ffffff;
-  --dp-secondary-color: #c0c4cc;
-  --dp-border-color: #ddd;
-  --dp-menu-border-color: #ddd;
-  --dp-border-color-hover: #aaaeb7;
-  --dp-disabled-color: #f6f6f6;
-  --dp-scroll-bar-background: #f3f3f3;
-  --dp-scroll-bar-color: #959595;
-  --dp-success-color: #76d275;
-  --dp-success-color-disabled: #a3d9b1;
-  --dp-icon-color: #959595;
-  --dp-danger-color: #ff6f60;
-  --dp-highlight-color: rgba(25, 118, 210, 0.1);
 }
 </style>

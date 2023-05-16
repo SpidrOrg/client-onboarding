@@ -21,7 +21,7 @@ const configureAuth = ({
   userPoolWebClientId,
   oauthDomain,
   redirectSignIn,
-  redirectSignOut
+  redirectSignOut,
 }) => {
   Amplify.configure({
     aws_project_region: region,
@@ -103,7 +103,7 @@ export async function logout() {
 // }
 
 export async function invokeGetApi(apiName, payload) {
-  const {  token } = await getAuthDetails();
+  const { token } = await getAuthDetails();
   const response = await axios.get(
     `https://${idpData.apiPrefix}/${idpData.stage}/${apiName}`,
     {
@@ -113,7 +113,7 @@ export async function invokeGetApi(apiName, payload) {
       params: payload,
     }
   );
-  return response?.data?.body;
+  return response?.data;
 }
 
 export async function invokePostApi(apiName, payload) {
@@ -128,5 +128,5 @@ export async function invokePostApi(apiName, payload) {
       },
     }
   );
-  return response?.data?.body;
+  return response?.data;
 }
