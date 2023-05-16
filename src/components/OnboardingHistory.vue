@@ -28,6 +28,21 @@ export default {
     refreshDataHandler() {
       this.fetchData();
     },
+    getStatusStyle(index, cellValue) {
+      let style = `tw-text-sm tw-text-center tw-text-black`;
+      if (index > 1) {
+        if (!cellValue){
+          style += ` tw-text-stone-500`
+        } else if (cellValue === 'pending'){
+          style += ` tw-text-yellow-500`
+        } else if (cellValue === 'processing'){
+          style += ` tw-text-red-500`
+        } else {
+          style += ` tw-text-green-700`
+        }
+      }
+      return style
+    }
   },
   computed: {
     tableHeaders() {
@@ -99,8 +114,8 @@ export default {
             :key="`${cellValue}-${index}`"
             class="tw-col-span-1 tw-flex tw-justify-center"
           >
-            <span class="tw-text-sm tw-text-black tw-text-center">{{
-              cellValue || '-'
+            <span :class="getStatusStyle(index, cellValue)">{{
+              cellValue || 'N/A'
             }}</span>
           </div>
         </li>
