@@ -6,11 +6,8 @@ const idpData = {
   oauthDomain: "snp-admin.auth.us-east-1.amazoncognito.com",//"api-test-domain.auth.us-east-1.amazoncognito.com",
   redirectSignIn: "https://admin.kearneysnp.com",//https://d3bbe8cr3npstt.cloudfront.net",
   redirectSignOut: "https://admin.kearneysnp.com",//"https://d3bbe8cr3npstt.cloudfront.net",
-  apiPrefix: "jw49xbxgvj.execute-api.us-east-1.amazonaws.com",
-  stage: "uat/uat-2117584738",
-  clientId: "2117584738",
-  clientDisplayName: "RnD Corp",
-  colorTheme: "teal"
+  apiPrefix: "kwom3u7p67.execute-api.us-east-1.amazonaws.com",
+  stage: "main/client-onboarding"
 }
 
 export default idpData;

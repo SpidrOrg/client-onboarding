@@ -245,7 +245,7 @@ export default {
         }
 
         if (response?.status === 'fail') {
-          this.error = 'Form submission failed';
+          this.error = `Form submission failed ${response?.message ? `- ${response?.message}` : ""}`;
         }
       } catch (e) {
         this.error = e;
@@ -385,39 +385,6 @@ export default {
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="3">
-          <label for="end-date-picker" class="tw-text-base">
-            End Date (Month & Year)
-          </label>
-          <VueDatePicker
-            id="end-date-picker"
-            v-model="formData.endDate"
-            month-picker
-            :format="formatDatePickerValue"
-            :min-date="minEndDate"
-            :max-date="maxEndDate"
-            :clearable="false"
-            :disabled="isLoading"
-            auto-apply
-            menu-class-name="dp-custom-menu"
-          >
-            <template #dp-input="{ value }">
-              <div
-                :class="`tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-brand-gray-1
-            ${isLoading ? 'tw-opacity-40' : 'tw-cursor-pointer'}`"
-              >
-                <span class="tw-text-base">{{ value }}</span>
-                <v-icon icon="mdi-calendar-month" :size="32" />
-              </div>
-            </template>
-          </VueDatePicker>
-          <span
-            v-if="!formInputsValidity.endDate"
-            class="tw-text-sm tw-text-red-500 tw-ml-3"
-          >
-            End Date is required
-          </span>
-        </v-col>
-        <v-col cols="12" sm="3">
           <label for="start-date-picker" class="tw-text-base">
             Start Date (Month & Year)
           </label>
@@ -448,6 +415,39 @@ export default {
             class="tw-text-sm tw-text-red-500 tw-ml-3"
           >
             {{ startDateError || 'Start Date is required' }}
+          </span>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <label for="end-date-picker" class="tw-text-base">
+            End Date (Month & Year)
+          </label>
+          <VueDatePicker
+            id="end-date-picker"
+            v-model="formData.endDate"
+            month-picker
+            :format="formatDatePickerValue"
+            :min-date="minEndDate"
+            :max-date="maxEndDate"
+            :clearable="false"
+            :disabled="isLoading"
+            auto-apply
+            menu-class-name="dp-custom-menu"
+          >
+            <template #dp-input="{ value }">
+              <div
+                :class="`tw-flex tw-items-center tw-justify-between tw-p-3 tw-bg-brand-gray-1
+            ${isLoading ? 'tw-opacity-40' : 'tw-cursor-pointer'}`"
+              >
+                <span class="tw-text-base">{{ value }}</span>
+                <v-icon icon="mdi-calendar-month" :size="32" />
+              </div>
+            </template>
+          </VueDatePicker>
+          <span
+            v-if="!formInputsValidity.endDate"
+            class="tw-text-sm tw-text-red-500 tw-ml-3"
+          >
+            End Date is required
           </span>
         </v-col>
       </v-row>

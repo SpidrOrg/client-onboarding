@@ -10,6 +10,7 @@ export default async function ({
    name,
    phone,
    selectedDataSources,
+   selectedClientDataSources,
    startDate,
    endDate
 }) {
@@ -25,6 +26,7 @@ export default async function ({
     name,
     phone,
     selectedDataSources,
+    selectedClientDataSources,
     startDate: startDateM,
     endDate: endDateM
   });
