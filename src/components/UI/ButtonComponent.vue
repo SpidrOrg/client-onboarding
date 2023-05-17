@@ -16,16 +16,16 @@ export default {
       },
     },
   },
-  methods: {
-    getButtonStyling() {
-      let styles = 'tw-px-4 tw-py-2 tw-text-white ';
+  computed: {
+    buttonClasses() {
+      let styles = 'tw-px-4 tw-py-2 tw-text-white';
 
       switch (this.type) {
         case 'primary':
-          styles += 'tw-bg-brand-primary ';
+          styles += ' tw-bg-brand-primary';
           break;
         case 'secondary':
-          styles += 'tw-bg-brand-secondary ';
+          styles += ' tw-bg-brand-secondary';
           break;
         default:
       }
@@ -37,7 +37,7 @@ export default {
 </script>
 
 <template>
-  <button :class="getButtonStyling()">
+  <button :class="buttonClasses">
     {{ label }}
   </button>
 </template>

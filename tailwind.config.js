@@ -22,6 +22,7 @@ module.exports = {
       colors: {
         'brand-primary': '#7823DC',
         'brand-primary-disabled': '#C8A5F0',
+        'brand-secondary': '#A5A5A5',
         'brand-secondary-10': '#E6E6E6',
         'brand-secondary-20': '#D2D2D2',
         'brand-gray-1': '#F5F5F5',

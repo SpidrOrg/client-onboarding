@@ -39,7 +39,7 @@ export default {
 <template>
   <div class="tw-h-screen tw-w-screen tw-p-6">
     <div class="tw-w-full tw-flex tw-justify-end tw-px-6">
-      <v-btn @click="handleLogout" color="grey-lighten-2">Logout</v-btn>
+      <v-icon icon="mdi-logout" @click="handleLogout" :size="48" />
     </div>
     <div
       class="tw-w-full tw-h-full tw-flex tw-justify-center tw-mt-40"
@@ -58,24 +58,28 @@ export default {
     >
       <div
         v-if="!clientOnboardingFormIsShown && !clientOnboardingHistoryIsShown"
-        class="tw-flex tw-justify-center tw-items-center tw-gap-x-5 tw-mt-20"
+        class="tw-flex tw-justify-center tw-items-center tw-mt-20"
       >
-        <v-btn
-          density="comfortable"
-          color="grey-lighten-2"
-          size="x-large"
-          @click="clientOnboardingFunc"
-        >
-          CLIENT ONBOARDING
-        </v-btn>
-        <v-btn
-          density="comfortable"
-          color="grey-lighten-2"
-          size="x-large"
-          @click="showHistoryHandler"
-        >
-          SHOW CLIENT ONBOARDING HISTORY
-        </v-btn>
+        <div class="tw-grid tw-grid-cols-2 tw-gap-x-5">
+          <v-btn
+            density="comfortable"
+            color="blue-grey"
+            size="x-large"
+            class="tw-col-span-1 tw-py-32"
+            @click="clientOnboardingFunc"
+          >
+            CLIENT ONBOARDING
+          </v-btn>
+          <v-btn
+            density="comfortable"
+            color="grey-lighten-2"
+            size="x-large"
+            class="tw-col-span-1 tw-py-32"
+            @click="showHistoryHandler"
+          >
+            SHOW CLIENT ONBOARDING HISTORY
+          </v-btn>
+        </div>
       </div>
       <ClientOnboardingForm
         v-if="clientOnboardingFormIsShown"

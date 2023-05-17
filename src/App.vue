@@ -2,8 +2,8 @@
 import _ from 'lodash';
 import jwt_decode from 'jwt-decode';
 import { setIdpData, getAuthDetails } from './idpUtils';
-import LoginPage from '@/components/LoginPage.vue';
-import LandingPage from '@/components/LandingPage.vue';
+import LoginPage from '@/pages/LoginPage.vue';
+import LandingPage from '@/pages/LandingPage.vue';
 
 export default {
   name: 'App',

@@ -27,24 +27,27 @@ export default {
       <div
         class="tw-col-span-6 tw-col-start-1 tw-self-center tw-justify-self-center"
       >
-        <img class="kearney-home-logo" :src="KearneyHomeLogo" />
+        <img
+          class="tw-h-[500px] tw-w-[444px] tw-object-contain"
+          :src="KearneyHomeLogo"
+        />
       </div>
       <div
         class="tw-col-span-6 tw-col-start-7 tw-px-20 desktop:tw-px-10 small-laptop:tw-px-10"
       >
-        <div class="tw-flex tw-flex-col tw-justify-center tw-h-full">
+        <div class="tw-h-full tw-flex tw-flex-col tw-justify-center tw-gap-y-6">
           <h1
-            class="tw-text-4xl desktop:tw-text-3xl small-laptop:tw-text-xl tw-text-black tw-font-medium"
+            class="tw-text-4xl desktop:tw-text-4xl small-laptop:tw-text-2xl tw-text-black tw-font-medium"
           >
             Kearney’s Sensing Solution - Admin
           </h1>
           <p
-            class="tw-text-lg desktop:tw-text-base small-laptop:tw-text-sm tw-text-black tw-break-words"
+            class="tw-text-xl desktop:tw-text-xl small-laptop:tw-text-base tw-text-black tw-break-words"
           >
             Manage Client onboarding & account set-up for sensing solution
             application.
           </p>
-          <div class="tw-pt-8 small-laptop:tw-pt-5 small-laptop:tw-pb-2">
+          <div class="tw-pt-8 small-laptop:tw-pt-6">
             <LoginButton
               label="Proceed to Sign In"
               type="primary"
@@ -54,54 +57,14 @@ export default {
         </div>
       </div>
     </div>
-    <footer class="footer">
-      <div class="footer-copy-right">Copyright @ Kearney 2023</div>
-    </footer>
+    <div class="tw-px-5">
+      <footer
+        class="tw-w-full tw-flex tw-p-4 tw-border-t tw-border-solid tw-border-brand-gray-2"
+      >
+        <div class="tw-ml-auto tw-flex tw-items-center">
+          Copyright @ Kearney 2023
+        </div>
+      </footer>
+    </div>
   </section>
 </template>
-
-<style scoped>
-@media screen and (max-width: 1440px) {
-  .kearney-home-logo {
-    height: 550px;
-    width: 430px;
-    object-fit: contain;
-  }
-  .kearney-infographic-image {
-    height: 320px;
-    width: 480px;
-    object-fit: contain;
-  }
-}
-
-@media screen and (min-width: 1441px) {
-  .kearney-home-logo {
-    height: 708px;
-    width: 630px;
-    object-fit: contain;
-  }
-  .kearney-infographic-image {
-    height: 456px;
-    width: 706px;
-    object-fit: contain;
-  }
-}
-
-.footer {
-  display: flex;
-  width: 100%;
-  height: 3rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  border-top-width: 1px;
-  border-style: solid;
-  --tw-border-opacity: 1;
-  border-color: rgb(219 219 219 / var(--tw-border-opacity));
-}
-
-.footer-copy-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-}
-</style>
