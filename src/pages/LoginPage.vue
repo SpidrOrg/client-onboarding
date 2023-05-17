@@ -1,0 +1,107 @@
+<script>
+import KearneyHomeLogo from '@/assets/kearneyHomeLogo.png';
+import LoginButton from '@/components/UI/ButtonComponent.vue';
+import { doFederatedSignIn } from '@/idpUtils';
+
+export default {
+  name: 'LoginPage',
+  components: {
+    LoginButton,
+  },
+  data() {
+    return {
+      KearneyHomeLogo,
+    };
+  },
+  methods: {
+    handleLoginIn() {
+      doFederatedSignIn();
+    },
+  },
+};
+</script>
+
+<template>
+  <section class="tw-flex tw-h-screen tw-flex-col">
+    <div class="tw-grid tw-grid-cols-12 tw-my-auto">
+      <div
+        class="tw-col-span-6 tw-col-start-1 tw-self-center tw-justify-self-center"
+      >
+        <img class="kearney-home-logo" :src="KearneyHomeLogo" />
+      </div>
+      <div
+        class="tw-col-span-6 tw-col-start-7 tw-px-20 desktop:tw-px-10 small-laptop:tw-px-10"
+      >
+        <div class="tw-flex tw-flex-col tw-justify-center tw-h-full">
+          <h1
+            class="tw-text-4xl desktop:tw-text-3xl small-laptop:tw-text-xl tw-text-black tw-font-medium"
+          >
+            Kearney’s Sensing Solution - Admin
+          </h1>
+          <p
+            class="tw-text-lg desktop:tw-text-base small-laptop:tw-text-sm tw-text-black tw-break-words"
+          >
+            Manage Client onboarding & account set-up for sensing solution
+            application.
+          </p>
+          <div class="tw-pt-8 small-laptop:tw-pt-5 small-laptop:tw-pb-2">
+            <LoginButton
+              label="Proceed to Sign In"
+              type="primary"
+              @click="handleLoginIn"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-copy-right">Copyright @ Kearney 2023</div>
+    </footer>
+  </section>
+</template>
+
+<style scoped>
+@media screen and (max-width: 1440px) {
+  .kearney-home-logo {
+    height: 550px;
+    width: 430px;
+    object-fit: contain;
+  }
+  .kearney-infographic-image {
+    height: 320px;
+    width: 480px;
+    object-fit: contain;
+  }
+}
+
+@media screen and (min-width: 1441px) {
+  .kearney-home-logo {
+    height: 708px;
+    width: 630px;
+    object-fit: contain;
+  }
+  .kearney-infographic-image {
+    height: 456px;
+    width: 706px;
+    object-fit: contain;
+  }
+}
+
+.footer {
+  display: flex;
+  width: 100%;
+  height: 3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-top-width: 1px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(219 219 219 / var(--tw-border-opacity));
+}
+
+.footer-copy-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+</style>
