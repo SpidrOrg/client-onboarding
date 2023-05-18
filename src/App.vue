@@ -58,5 +58,8 @@ export default {
 
 <template>
   <LoginPage v-if="!isLoggedIn && !loading" />
-  <LandingPage v-if="isLoggedIn && !loading" />
+  <LandingPage
+    v-if="isLoggedIn && !loading"
+    :userdata="this.loggedInUserData"
+  />
 </template>
