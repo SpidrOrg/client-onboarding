@@ -18,7 +18,9 @@ export default {
     <div class="tw-w-full tw-flex tw-p-5 tw-bg-brand-gray-1">
       <TheHeader :userdata="userdata" />
     </div>
-    <div class="tw-w-full tw-h-full tw-px-5 tw-bg-brand-gray-1">
+    <div
+      class="tw-w-full tw-min-h-full tw-max-h-fit tw-px-5 tw-bg-brand-gray-1"
+    >
       <ClientOnboarding />
     </div>
     <div class="tw-px-5 tw-bg-brand-gray-1">

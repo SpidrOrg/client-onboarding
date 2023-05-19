@@ -265,7 +265,7 @@ export default {
         </div>
       </div>
       <div
-        class="tw-w-full tw-h-4/5 tw-flex tw-justify-center tw-items-center"
+        class="tw-w-full tw-h-[50vh] tw-flex tw-justify-center tw-items-center"
         v-if="isLoading"
       >
         <v-progress-circular
