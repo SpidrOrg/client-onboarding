@@ -245,7 +245,7 @@ export default {
 </script>
 
 <template>
-  <div class="tw-w-full tw-h-full tw-py-10">
+  <div class="tw-w-full tw-h-full tw-py-5">
     <div class="tw-bg-white tw-px-6">
       <div
         class="tw-w-full tw-flex tw-items-center tw-py-4 tw-border-b tw-border-solid tw-border-brand-gray-2"
@@ -265,7 +265,7 @@ export default {
         </div>
       </div>
       <div
-        class="tw-w-full tw-h-[50vh] tw-flex tw-justify-center tw-items-center"
+        class="tw-w-full tw-h-[60vh] tw-flex tw-justify-center tw-items-center"
         v-if="isLoading"
       >
         <v-progress-circular

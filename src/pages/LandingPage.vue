@@ -2,6 +2,8 @@
 import TheHeader from '@/components/TheHeader.vue';
 import ClientOnboarding from '@/components/ClientOnboarding/ClientOnboarding.vue';
 
+import kearneyOrgLogo from '@/assets/kearneyOrgLogo.svg';
+
 export default {
   name: 'LandingPage',
   components: {
@@ -11,11 +13,17 @@ export default {
   props: {
     userdata: { type: Object, required: false },
   },
+  data() {
+    return {
+      kearneyOrgLogo,
+    };
+  },
 };
 </script>
 <template>
   <div id="screen" class="tw-h-screen tw-w-screen">
     <div class="tw-w-full tw-flex tw-p-5 tw-bg-brand-gray-1">
+      <img :src="kearneyOrgLogo" alt="kearneyOrgLogo" />
       <TheHeader :userdata="userdata" />
     </div>
     <div
