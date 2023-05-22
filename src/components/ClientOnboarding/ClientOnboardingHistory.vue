@@ -73,7 +73,7 @@ export default {
         class="tw-w-full tw-flex tw-items-center tw-py-4 tw-border-b tw-border-solid tw-border-brand-gray-2"
       >
         <span class="tw-text-xl tw-font-bold tw-text-black">
-          Manage Clients
+          Clients
         </span>
         <div class="tw-ml-auto tw-flex tw-gap-x-4">
           <button

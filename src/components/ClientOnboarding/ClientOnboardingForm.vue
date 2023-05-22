@@ -259,7 +259,7 @@ export default {
             @click="$emit('closeForm')"
           >
             <span class="tw-text-base tw-text-brand-primary">
-              Back to Manage Clients
+              Back
             </span>
           </button>
         </div>

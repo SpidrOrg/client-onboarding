@@ -31,7 +31,7 @@ const configureAuth = ({
     Auth: {
       oauth: {
         domain: oauthDomain,
-        scope: ['email', 'openid', 'phone'],
+        scope: ['email', 'openid', 'profile'],
         redirectSignIn: redirectSignIn,
         redirectSignOut: redirectSignOut,
         responseType: 'code',
