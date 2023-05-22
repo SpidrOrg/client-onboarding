@@ -7,7 +7,7 @@
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ],
-      "Resource": "arn:aws:logs:us-east-1::123456789012::*",
+      "Resource": "*",
       "Effect": "Allow"
     },
     {
