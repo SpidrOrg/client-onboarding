@@ -23,7 +23,13 @@ export default {
       try {
         const response = await fetchOnboardingHistory();
         this.apiData = _.get(response, 'data');
-        console.log(response);
+
+        if (
+          response?.status === 'error' ||
+          _.size(_.get(this.apiData, 'headers')) === 0
+        ) {
+          throw new Error('Data is not available!');
+        }
       } catch (e) {
         this.error = e;
       }
@@ -58,7 +64,7 @@ export default {
       return _.get(this.apiData, 'data') || [];
     },
     isApiDataAvailable() {
-      return _.size(_.get(this.apiData, 'data')) > 0;
+      return _.size(_.get(this.apiData, 'headers')) > 0;
     },
   },
   created() {
@@ -117,7 +123,18 @@ export default {
             >
           </span>
         </div>
-        <ul class="tw-max-h-[60vh] tw-overflow-scroll">
+        <div
+          v-if="!tableRows?.length"
+          class="tw-flex tw-justify-center tw-py-3"
+        >
+          <span class="tw-text-base tw-font-medium tw-text-black">
+            No Records to display
+          </span>
+        </div>
+        <ul
+          v-if="!!tableRows?.length"
+          class="tw-max-h-[60vh] tw-overflow-scroll"
+        >
           <li
             v-for="(rowData, index) in tableRows"
             :key="rowData[0]"
@@ -138,6 +155,9 @@ export default {
             </div>
           </li>
         </ul>
+      </div>
+      <div v-if="!isFetching && error" class="tw-py-6">
+        <v-alert type="error" :text="error.toString()"></v-alert>
       </div>
     </div>
   </div>
