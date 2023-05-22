@@ -17,7 +17,7 @@ export default async function ({
   const startDateM = format(new Date(startDate.year, startDate.month), 'yyyy-MM');
   const endDateM = format(new Date(endDate.year, endDate.month), 'yyyy-MM')
 
-  const data = await postApiBase('new1', {
+  const data = await postApiBase('new', {
     adminEmail,
     categories,
     chosenModel,
