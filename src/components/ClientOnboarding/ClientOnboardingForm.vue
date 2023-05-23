@@ -38,10 +38,10 @@ export default {
       tenantIdRules: [
         (value) => {
           if (!value) return true; // Optional field
-
-          if (!value.match(ID_REGEX)) {
-            return 'The value should be a 10 Digit Number';
+          if (value.match(ID_REGEX)) {
+            return true;
           }
+          return 'The value should be a 10 Digit Number';
         },
       ],
       adminEmailRule: [
