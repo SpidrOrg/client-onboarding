@@ -76,7 +76,7 @@ export const handler = async(event) => {
     }
 
     const formatedForUI = formatForUI(thisAccountHistory)
-    return returnResponse("success", "success", {headers: ["Tenant ID", "Host", "Creation at", "Processed At"], data: formatedForUI})
+    return returnResponse("success", "success", {headers: ["Tenant ID", "Host", "Created at", "Processed at"], data: formatedForUI})
   } catch (e){
     return returnResponse("error", e, [])
   }

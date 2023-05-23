@@ -108,13 +108,7 @@ export const handler = async(event) => {
         "S": JSON.stringify(formValues.chosenModel)
       },
       "clientspecificsources": {
-        "SS": [
-          "Google Trends",
-          "SimilarWeb"
-        ]
-      },
-      "dataLookbackMonths": {
-        "N": "60"
+        "SS": formValues.selectedClientDataSources
       },
       "frequency": {
         "N": `${formValues.frequency}`
@@ -135,7 +129,7 @@ export const handler = async(event) => {
         "S": `${formValues.name}`
       },
       "orgId": {
-        "S": "7112574756"
+        "S": "NA"
       },
       "phone": {
         "S": `${formValues.phone}`
