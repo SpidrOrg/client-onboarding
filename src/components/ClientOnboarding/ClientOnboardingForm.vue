@@ -13,6 +13,7 @@ import {
   EXTERNAL_DATA_SOURCES,
   CLIENT_SPECIFIC_DATA_SOURCES,
   EMAIL_REGEX,
+  ID_REGEX,
 } from './constants';
 
 import VueDatePicker from '@vuepic/vue-datepicker';
@@ -34,6 +35,15 @@ export default {
       availableModels: MODELS,
       availableDataSources: EXTERNAL_DATA_SOURCES,
       availableClientDataSources: CLIENT_SPECIFIC_DATA_SOURCES,
+      tenantIdRules: [
+        (value) => {
+          if (!value) return true; // Optional field
+
+          if (!value.match(ID_REGEX)) {
+            return 'The value should be a 10 Digit Number';
+          }
+        },
+      ],
       adminEmailRule: [
         (value) => {
           if (!value.match(EMAIL_REGEX)) {
@@ -56,6 +66,7 @@ export default {
         },
       ],
       formData: {
+        tenantId: null,
         adminEmail: '',
         categories: '',
         chosenModel: [],
@@ -69,6 +80,7 @@ export default {
         endDate: null,
       },
       formInputsValidity: {
+        tenantId: true,
         adminEmail: true,
         categories: true,
         chosenModel: true,
@@ -109,6 +121,11 @@ export default {
   methods: {
     formatDatePickerValue(date) {
       return formatFn(date, 'MMM yyyy');
+    },
+    validateTenantId() {
+      const value = this.formData.tenantId;
+      if (!value) return true; // Optional field
+      return !!value.match(ID_REGEX);
     },
     validateAdminEmail(value) {
       if (_.isEmpty(value)) return false;
@@ -175,6 +192,7 @@ export default {
       return true;
     },
     validateFormInputs() {
+      const enteredTenantIdIsValid = this.validateTenantId();
       const enteredStartDateIsValid = this.validateStartDate();
       const enteredEndDateIsValid = !_.isEmpty(this.formData.endDate);
       const enteredNameIsValid = !_.isEmpty(this.formData.name);
@@ -192,6 +210,7 @@ export default {
 
       this.formInputsValidity = {
         ...this.formInputsValidity,
+        tenantId: enteredTenantIdIsValid,
         adminEmail: enteredAdminEmailIsValid,
         categories: enteredCategoriesAreValid,
         chosenModel: enteredModelIsValid,
@@ -255,12 +274,10 @@ export default {
         </span>
         <div class="tw-ml-auto tw-flex tw-gap-x-4">
           <button
-            class="tw-py-2 tw-px-4 tw-border tw-border-solid tw-border-brand-primary"
+            class="tw-px-10 tw-py-2 tw-border tw-border-solid tw-border-brand-primary"
             @click="$emit('closeForm')"
           >
-            <span class="tw-text-base tw-text-brand-primary">
-              Back
-            </span>
+            <span class="tw-text-base tw-text-brand-primary"> Back </span>
           </button>
         </div>
       </div>
@@ -288,32 +305,48 @@ export default {
             >
               Basic Information
             </div>
-            <v-row>
-              <v-col cols="12" sm="4">
-                <label for="name" class="tw-text-sm">Client Name</label>
-                <v-text-field
-                  id="name"
-                  v-model="formData.name"
-                  :rules="generalRules"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <label for="adminEmail" class="tw-text-sm">Email Address</label>
-                <v-text-field
-                  id="adminEmail"
-                  v-model="formData.adminEmail"
-                  :rules="adminEmailRule"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <label for="phone" class="tw-text-sm">Contact Number</label>
-                <v-text-field
-                  id="phone"
-                  v-model="formData.phone"
-                  :rules="generalRules"
-                ></v-text-field>
-              </v-col>
-            </v-row>
+            <div>
+              <v-row>
+                <v-col cols="12" sm="4">
+                  <label for="tenantId" class="tw-text-sm">
+                    Client ID (Optional)
+                  </label>
+                  <v-text-field
+                    id="tenantId"
+                    v-model="formData.tenantId"
+                    :rules="tenantIdRules"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <label for="name" class="tw-text-sm">Client Name</label>
+                  <v-text-field
+                    id="name"
+                    v-model="formData.name"
+                    :rules="generalRules"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <label for="phone" class="tw-text-sm">Contact Number</label>
+                  <v-text-field
+                    id="phone"
+                    v-model="formData.phone"
+                    :rules="generalRules"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <label for="adminEmail" class="tw-text-sm"
+                    >Email Address</label
+                  >
+                  <v-text-field
+                    id="adminEmail"
+                    v-model="formData.adminEmail"
+                    :rules="adminEmailRule"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </div>
           </div>
           <div class="tw-flex tw-flex-col tw-gap-2 tw-pb-4">
             <div
@@ -371,14 +404,13 @@ export default {
                     id="selectedDataSources"
                     :items="availableDataSources"
                     v-model="formData.selectedDataSources"
+                    :error-messages="
+                      formInputsValidity.selectedDataSources
+                        ? ''
+                        : selectedDataSourcesError
+                    "
                     multiple
                   />
-                  <span
-                    v-if="!formInputsValidity.selectedDataSources"
-                    class="tw-text-sm tw-text-red-500 tw-ml-3"
-                  >
-                    {{ selectedDataSourcesError }}
-                  </span>
                 </v-col>
               </v-row>
               <v-row>

@@ -1,23 +1,27 @@
 import postApiBase from '../postApiBase';
-import {format} from "date-fns"
+import { format } from 'date-fns';
 
 export default async function ({
-   adminEmail,
-   categories,
-   chosenModel,
-   frequency,
-   host,
-   name,
-   phone,
-   selectedDataSources,
-   selectedClientDataSources,
-   startDate,
-   endDate
+  tenantId,
+  adminEmail,
+  categories,
+  chosenModel,
+  frequency,
+  host,
+  name,
+  phone,
+  selectedDataSources,
+  selectedClientDataSources,
+  startDate,
+  endDate,
 }) {
-  const startDateM = format(new Date(startDate.year, startDate.month), 'yyyy-MM');
-  const endDateM = format(new Date(endDate.year, endDate.month), 'yyyy-MM')
+  const startDateM = format(
+    new Date(startDate.year, startDate.month),
+    'yyyy-MM'
+  );
+  const endDateM = format(new Date(endDate.year, endDate.month), 'yyyy-MM');
 
-  const data = await postApiBase('new', {
+  const payload = {
     adminEmail,
     categories,
     chosenModel,
@@ -28,8 +32,12 @@ export default async function ({
     selectedDataSources,
     selectedClientDataSources,
     startDate: startDateM,
-    endDate: endDateM
-  });
+    endDate: endDateM,
+  };
 
-  return data;
+  if (tenantId) {
+    payload.tenantId = tenantId;
+  }
+
+  return await postApiBase('new', payload);
 }
