@@ -7,8 +7,7 @@
   },
   "environment": {
     "awsAccountId": ":123456789012:",
-    "region": ":REGION:",
-    "test": ":REGION:"
+    "region": ":REGION:"
   },
   "layers": []
 }
