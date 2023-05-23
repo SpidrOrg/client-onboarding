@@ -306,7 +306,7 @@ export default {
               Basic Information
             </div>
             <v-row>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6">
                 <label for="tenantId" class="tw-text-sm">
                   Client ID (Optional)
                 </label>
@@ -316,7 +316,7 @@ export default {
                   :rules="tenantIdRules"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6">
                 <label for="name" class="tw-text-sm">Client Name</label>
                 <v-text-field
                   id="name"
@@ -324,7 +324,7 @@ export default {
                   :rules="generalRules"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6">
                 <label for="phone" class="tw-text-sm">Contact Number</label>
                 <v-text-field
                   id="phone"
@@ -332,7 +332,7 @@ export default {
                   :rules="generalRules"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="4">
+              <v-col cols="12" sm="6">
                 <label for="adminEmail" class="tw-text-sm">Email Address</label>
                 <v-text-field
                   id="adminEmail"
