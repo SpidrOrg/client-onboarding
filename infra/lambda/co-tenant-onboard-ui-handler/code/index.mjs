@@ -92,61 +92,64 @@ export const handler = async(event) => {
     return returnResponse("fail", "ID already exists..., please retry.");
   }
 
+  const item = {
+    "id": {
+      "N": `${tenantId}`
+    },
+    "adminEmail": {
+      "S": formValues.adminEmail
+    },
+    "categories": {
+      "S": JSON.stringify(formValues.categories.split(","))
+    },
+    "choosenModel": {
+      "S": JSON.stringify(formValues.chosenModel)
+    },
+    "frequency": {
+      "N": `${formValues.frequency}`
+    },
+    "horizons": {
+      "S": "[\"1_3m\", \"4_6m\", \"7_9m\", \"10_12m\",\"1m\",\"3m\", \"6m\", \"12m\"]"
+    },
+    "host": {
+      "S": `${formValues.host}`
+    },
+    "init_dt_x_end": {
+      "S": `${formValues.endDate}`
+    },
+    "init_dt_x_start": {
+      "S": `${formValues.startDate}`
+    },
+    "name": {
+      "S": `${formValues.name}`
+    },
+    "orgId": {
+      "S": "NA"
+    },
+    "phone": {
+      "S": `${formValues.phone}`
+    },
+    "creationDt": {
+      "S": new Date().toISOString()
+    },
+    "onboardDt": {
+      "S": "pending"
+    }
+  }
+
+  if (formValues.selectedDataSources.length > 0){
+    item.selectedDataSources = {
+      "SS": formValues.selectedDataSources
+    }
+  }
+  if (formValues.selectedClientDataSources.length > 0){
+    item.selectedClientDataSources = {
+      "SS": formValues.selectedClientDataSources
+    }
+  }
   const input = {
     TableName: "sensing-solution-tenant",
-    Item: {
-      "id": {
-        "N": `${tenantId}`
-      },
-      "adminEmail": {
-        "S": formValues.adminEmail
-      },
-      "categories": {
-        "S": JSON.stringify(formValues.categories.split(","))
-      },
-      "choosenModel": {
-        "S": JSON.stringify(formValues.chosenModel)
-      },
-      "clientspecificsources": {
-        "SS": formValues.selectedClientDataSources
-      },
-      "frequency": {
-        "N": `${formValues.frequency}`
-      },
-      "horizons": {
-        "S": "[\"1_3m\", \"4_6m\", \"7_9m\", \"10_12m\",\"1m\",\"3m\", \"6m\", \"12m\"]"
-      },
-      "host": {
-        "S": `${formValues.host}`
-      },
-      "init_dt_x_end": {
-        "S": `${formValues.endDate}`
-      },
-      "init_dt_x_start": {
-        "S": `${formValues.startDate}`
-      },
-      "name": {
-        "S": `${formValues.name}`
-      },
-      "orgId": {
-        "S": "NA"
-      },
-      "phone": {
-        "S": `${formValues.phone}`
-      },
-      "selectedDataSources": {
-        "SS": formValues.selectedDataSources
-      },
-      "selectedClientDataSources": {
-        "SS": formValues.selectedClientDataSources
-      },
-      "creationDt": {
-        "S": new Date().toISOString()
-      },
-      "onboardDt": {
-        "S": "pending"
-      }
-    }
+    Item: item
   };
 
   const thisAccountDynamodbQueryResult = await thisAccountDynamodbClient.send(new PutItemCommand(input)).catch(e => {
