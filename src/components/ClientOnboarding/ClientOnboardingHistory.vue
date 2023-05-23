@@ -74,13 +74,11 @@ export default {
 </script>
 <template>
   <div class="tw-w-full tw-h-full tw-py-5">
-    <div class="tw-bg-white tw-px-6">
+    <div class="tw-bg-white tw-px-6 tw-min-h-[80vh]">
       <div
         class="tw-w-full tw-flex tw-items-center tw-py-4 tw-border-b tw-border-solid tw-border-brand-gray-2"
       >
-        <span class="tw-text-xl tw-font-bold tw-text-black">
-          Clients
-        </span>
+        <span class="tw-text-xl tw-font-bold tw-text-black"> Clients </span>
         <div class="tw-ml-auto tw-flex tw-gap-x-4">
           <button
             class="tw-px-2 tw-py-1 tw-border tw-border-solid tw-border-brand-primary"
