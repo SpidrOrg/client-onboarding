@@ -305,48 +305,42 @@ export default {
             >
               Basic Information
             </div>
-            <div>
-              <v-row>
-                <v-col cols="12" sm="4">
-                  <label for="tenantId" class="tw-text-sm">
-                    Client ID (Optional)
-                  </label>
-                  <v-text-field
-                    id="tenantId"
-                    v-model="formData.tenantId"
-                    :rules="tenantIdRules"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <label for="name" class="tw-text-sm">Client Name</label>
-                  <v-text-field
-                    id="name"
-                    v-model="formData.name"
-                    :rules="generalRules"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <label for="phone" class="tw-text-sm">Contact Number</label>
-                  <v-text-field
-                    id="phone"
-                    v-model="formData.phone"
-                    :rules="generalRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12">
-                  <label for="adminEmail" class="tw-text-sm"
-                    >Email Address</label
-                  >
-                  <v-text-field
-                    id="adminEmail"
-                    v-model="formData.adminEmail"
-                    :rules="adminEmailRule"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </div>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <label for="tenantId" class="tw-text-sm">
+                  Client ID (Optional)
+                </label>
+                <v-text-field
+                  id="tenantId"
+                  v-model="formData.tenantId"
+                  :rules="tenantIdRules"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <label for="name" class="tw-text-sm">Client Name</label>
+                <v-text-field
+                  id="name"
+                  v-model="formData.name"
+                  :rules="generalRules"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <label for="phone" class="tw-text-sm">Contact Number</label>
+                <v-text-field
+                  id="phone"
+                  v-model="formData.phone"
+                  :rules="generalRules"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <label for="adminEmail" class="tw-text-sm">Email Address</label>
+                <v-text-field
+                  id="adminEmail"
+                  v-model="formData.adminEmail"
+                  :rules="adminEmailRule"
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </div>
           <div class="tw-flex tw-flex-col tw-gap-2 tw-pb-4">
             <div
