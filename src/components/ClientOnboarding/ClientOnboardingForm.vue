@@ -325,19 +325,19 @@ export default {
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <label for="phone" class="tw-text-sm">Contact Number</label>
-                <v-text-field
-                  id="phone"
-                  v-model="formData.phone"
-                  :rules="generalRules"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
                 <label for="adminEmail" class="tw-text-sm">Email Address</label>
                 <v-text-field
                   id="adminEmail"
                   v-model="formData.adminEmail"
                   :rules="adminEmailRule"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <label for="phone" class="tw-text-sm">Contact Number</label>
+                <v-text-field
+                  id="phone"
+                  v-model="formData.phone"
+                  :rules="generalRules"
                 ></v-text-field>
               </v-col>
             </v-row>

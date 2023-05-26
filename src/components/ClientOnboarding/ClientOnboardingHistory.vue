@@ -1,6 +1,6 @@
 <script>
 import _ from 'lodash';
-import dfnsFormat from "date-fns/format";
+import dfnsFormat from 'date-fns/format';
 import ButtonComponent from '../UI/ButtonComponent.vue';
 import fetchOnboardingHistory from '@/api/fetchOnboardingHistory';
 
@@ -45,9 +45,9 @@ export default {
         if (!cellValue) {
           style += ` tw-text-black`;
         } else if (cellValue === 'pending') {
-          style += ` tw-text-brand-yellow-1`;
+          style += ` tw-text-brand-yellow-1 tw-uppercase`;
         } else if (cellValue === 'processing') {
-          style += ` tw-text-brand-red-1`;
+          style += ` tw-text-brand-red-1 tw-uppercase`;
         } else {
           style += ` tw-text-brand-green-1`;
         }
@@ -63,18 +63,38 @@ export default {
     },
     tableRows() {
       const headers = _.get(this.apiData, 'headers') || [];
-      const indexOfCreatedAt = _.findIndex(headers, v => v === "Created at");
-      const indexOfProcessedAt = _.findIndex(headers, v => v === "Processed at");
+      const indexOfCreatedAt = _.findIndex(headers, (v) => v === 'Created at');
+      const indexOfProcessedAt = _.findIndex(
+        headers,
+        (v) => v === 'Processed at'
+      );
       const data = _.get(this.apiData, 'data') || [];
-      _.map(data, v => {
+      _.map(data, (v) => {
         try {
-          v[indexOfCreatedAt] = dfnsFormat(new Date(v[indexOfCreatedAt]), 'MM-dd-yyyy hh:mm:ss aaa');
-          v[indexOfProcessedAt] = dfnsFormat(new Date(v[indexOfProcessedAt]), 'MM-dd-yyyy hh:mm:ss aaa')
+          if (
+            v[indexOfCreatedAt] !== 'pending' &&
+            v[indexOfCreatedAt] !== 'processing'
+          ) {
+            v[indexOfCreatedAt] = dfnsFormat(
+              new Date(v[indexOfCreatedAt]),
+              'MM-dd-yyyy hh:mm:ss aaa'
+            );
+          }
+
+          if (
+            v[indexOfProcessedAt] !== 'pending' &&
+            v[indexOfProcessedAt] !== 'processing'
+          ) {
+            v[indexOfProcessedAt] = dfnsFormat(
+              new Date(v[indexOfProcessedAt]),
+              'MM-dd-yyyy hh:mm:ss aaa'
+            );
+          }
         } catch (e) {
-          console.log("Error formatting date", e);
+          console.log('Error formatting date', e);
         }
         return v;
-      })
+      });
       return data;
     },
     isApiDataAvailable() {
