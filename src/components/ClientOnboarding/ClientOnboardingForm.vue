@@ -144,7 +144,6 @@ export default {
             return false;
           }
         }
-        return true;
       }
 
       if (_.size(value) < 2) {

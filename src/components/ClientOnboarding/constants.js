@@ -3,6 +3,7 @@ export const MODELS = ['rf', 'svr'];
 export const EXTERNAL_DATA_SOURCES = [
   'Google Trends',
   'SimilarWeb',
+  "IHS",
   'Yahoo Finance',
   'Meteostat',
   'Covid',
