@@ -17,9 +17,9 @@ export default async function ({
 }) {
   const startDateM = format(
     new Date(startDate.year, startDate.month),
-    'yyyy-MM'
+    'yyyy-MM-dd'
   );
-  const endDateM = format(new Date(endDate.year, endDate.month), 'yyyy-MM');
+  const endDateM = format(new Date(endDate.year, endDate.month), 'yyyy-MM-dd');
 
   const payload = {
     adminEmail,
